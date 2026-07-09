@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum AppointmentStatus {
+  scheduled
+  cancelled
+  completed
+}
+
+model Client {
+  id           String        @id @default(cuid())
+  name         String
+  phone        String
+  appointments Appointment[]
+}
+
+model Professional {
+  id           String        @id @default(cuid())
+  name         String
+  specialty    String
+  appointments Appointment[]
+}
+
+model Service {
+  id              String        @id @default(cuid())
+  name            String
+  durationMinutes Int
+  price           Int
+  appointments    Appointment[]
+}
+
+model Appointment {
+  id             String            @id @default(cuid())
+  clientId       String
+  professionalId String
+  serviceId      String
+  startsAt       DateTime
+  status         AppointmentStatus @default(scheduled)
+
+  client       Client       @relation(fields: [clientId], references: [id])
+  professional Professional @relation(fields: [professionalId], references: [id])
+  service      Service      @relation(fields: [serviceId], references: [id])
+}

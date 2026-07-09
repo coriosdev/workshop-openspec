@@ -1,0 +1,75 @@
+schema: spec-driven
+
+context: |
+
+  ## Dominio
+  Sistema de reservas de citas para una barbería o consultorio pequeño.
+  Permite crear citas entre clientes y profesionales.
+
+  ## Objetivo del ejercicio
+  Continuar un proyecto existente con código ya generado parcialmente por IA.
+  El siguiente cambio requiere aclarar reglas de negocio antes de implementar.
+  Cambio sugerido: appointment-reschedule-and-cancel.
+
+  ## Stack
+  - Monorepo con pnpm workspaces
+  - TypeScript en todo el stack
+  - Frontend: React + Vite, TanStack Query
+  - Backend: Fastify, REST JSON
+  - Base de datos: SQLite con Prisma
+  - Validación: Zod
+  - Tests: Vitest
+  - Paquetes: `apps/web`, `apps/api`, `packages/shared`
+
+  ## Estructura y patrones
+  Backend (`apps/api/src/`):
+  - Módulos por dominio: routes → services → repositories
+  - Schemas Zod para requests/responses
+  - State transitions explícitas para cambios de estado
+  - Contratos compartidos en `packages/shared`
+
+  Frontend (`apps/web/src/`):
+  - Feature folders por dominio (UI, API client, tipos)
+  - Server state con TanStack Query
+  - UI orientada a estados (scheduled, cancelled, completed, etc.)
+
+  ## Convenciones
+  - Conventional Commits en inglés
+  - Tipos y schemas Zod compartidos en packages/shared
+  - Errores de negocio con mensajes claros y códigos HTTP apropiados
+  - No agregar autenticación real ni funcionalidades fuera del alcance del cambio
+
+rules:
+  proposal:
+    - "Nombre del change: appointment-reschedule-and-cancel"
+    - "Incluir sección explícita de Non-goals (p. ej. reactivar citas canceladas, autenticación)"
+    - "Listar las reglas de negocio ambiguas que OpenSpec debe resolver antes de implementar"
+    - "Mencionar impacto en backend, frontend y packages/shared"
+    - "Definir capabilities nuevas: cancelación, reprogramación e historial de citas"
+  specs:
+    - "Usar formato WHEN/THEN para cada regla de negocio"
+    - "Cubrir transiciones de estado: scheduled → cancelled, scheduled → reprogramado"
+    - "Especificar restricción de 2 horas de anticipación para cancelar y reprogramar"
+    - "Especificar validación de horario laboral y conflictos de disponibilidad del profesional"
+    - "Requerir motivo en cancelación; en reprogramación guardar hora anterior, nueva y motivo"
+    - "Incluir escenarios de error con mensajes de negocio claros"
+    - "Documentar los tres endpoints: cancel, reschedule e history"
+    - "Incluir comportamiento de UI: acciones condicionales por estado y refresh sin recarga completa"
+  design:
+    - "Respetar estructura existente: routes/services/repositories en backend, feature folders en frontend"
+    - "Definir máquina de estados de citas y transiciones permitidas"
+    - "Diseñar modelo de historial de cambios (tabla o entidad de auditoría)"
+    - "Usar Zod en packages/shared para contratos de cancel y reschedule"
+    - "Usar TanStack Query mutations con invalidación/refetch selectivo tras cambios"
+    - "Definir estrategia de detección de solapamiento de citas del profesional"
+    - "Definir formato de errores de negocio (código + mensaje) para el frontend"
+    - "No rediseñar módulos ya implementados (clientes, profesionales, servicios, CRUD básico)"
+  tasks:
+    - "Agrupar tareas en backend, frontend, shared y tests"
+    - "Incluir migración Prisma para historial y campos necesarios"
+    - "Incluir endpoints POST cancel, POST reschedule y GET history"
+    - "Incluir reglas de estado y validaciones en el service layer"
+    - "Incluir componentes UI: botón cancelar, botón reprogramar, modal de reprogramación"
+    - "Incluir pruebas Vitest para reglas críticas (2h anticipación, solapamiento, estados inválidos)"
+    - "Incluir tarea de verificación end-to-end del flujo en listado de citas"
+    - "Dividir tareas en chunks implementables de máximo 2 horas"

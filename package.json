@@ -1,0 +1,14 @@
+{
+  "name": "workshop-openspec",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "test": "pnpm --filter @workshop/api test",
+    "db:push": "pnpm --filter @workshop/api db:push",
+    "db:seed": "pnpm --filter @workshop/api db:seed",
+    "db:studio": "pnpm --filter @workshop/api db:studio"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
