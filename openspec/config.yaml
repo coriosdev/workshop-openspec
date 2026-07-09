@@ -1,0 +1,34 @@
+schema: spec-driven
+
+context: |
+  Monorepo pnpm (`@workshop/api`, `@workshop/web`, `@workshop/shared`). Domain: appointment booking — Client, Professional, Service, Appointment.
+
+  Stack: Fastify 5 + fastify-type-provider-zod, React 19 + Vite 6, Prisma 6 (SQLite at repo root via `file:../dev.db`), Zod, TanStack Query, shadcn/ui (new-york). Node 20+, ESM, TypeScript strict.
+
+  API layout: `apps/api/src/modules/<entity>/{routes,service,repository}.ts`. Export services/repos as object literals (`export const fooService = { ... }`). Routes validate with Zod schemas from `@workshop/shared`; business rules in service; Prisma in repository.
+
+  Shared package: Zod `create*/update*` schemas + inferred types, `ERROR_CODES`, domain constants. New validation or error codes go here first.
+
+  Errors: `{ error: { code, message } }` via `AppError` + global handler. Codes in `packages/shared/src/error-codes.ts`. Delete Client/Professional/Service returns 409 `HAS_APPOINTMENTS` if linked appointments exist.
+
+  REST conventions: GET list, GET `:id`, POST → 201, PATCH, DELETE → 204. Appointments: `startsAt` is ISO datetime string, must be in the future (`STARTS_AT_MUST_BE_FUTURE`). List/detail include nested client, professional, service. Status enum: scheduled | cancelled | completed.
+
+  Web: features in `apps/web/src/features/<name>/` (`.api.ts`, `.hooks.ts`, components). HTTP via `fetchJson` at `/api/*` (Vite proxy strips prefix). UI primitives in `@/components/ui`.
+
+  Tests: Vitest in API only (`pnpm test`), service-level with mocked repositories. No auth, no migrations workflow — use `pnpm db:push` + seed.
+
+rules:
+  proposal:
+    - Capabilities use kebab-case matching domain entities (e.g. `appointments`, `clients`); check `openspec/specs/` before listing Modified Capabilities
+    - What Changes must call out API routes, `@workshop/shared` schema/error-code changes, Prisma model fields, and whether web UI is in scope
+    - Impact must name affected modules under `apps/api/src/modules/` and `apps/web/src/features/`
+  specs:
+    - API requirements use paths without `/api` prefix (backend routes); cite HTTP status and `ERROR_CODES` value for error scenarios
+    - Datetimes in scenarios as ISO 8601 strings; appointment `startsAt` rules apply unless explicitly changing them
+    - Each requirement needs ≥1 `#### Scenario` with **WHEN**/**THEN**; use SHALL/MUST
+  design:
+    - Follow existing module split (routes → service → repository); put Zod schemas and error codes in `packages/shared`
+    - Skip design.md for single-module CRUD with no model changes; required for cross-cutting, new Prisma models/enums, or web+api coordination
+  tasks:
+    - "Order: shared schemas/types → Prisma schema + db:push → API (repository, service, routes) → Vitest → web (api, hooks, UI)"
+    - "Checkbox format '- [ ] N.M Description'; include pnpm test task when service logic changes"
