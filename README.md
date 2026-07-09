@@ -1,13 +1,15 @@
-# Workshop OpenSpec — Appointment Booking
+# Appointments
 
-Monorepo baseline for the OpenSpec workshop. This is the **baseline checkpoint**: a working full-stack appointment booking app with seeded data, API error envelopes, and a React UI.
+Small monorepo for managing appointments: clients, professionals, services, and booking slots.
+
+**Stack:** Fastify, React, Prisma (SQLite), Zod, TanStack Query.
 
 ## Prerequisites
 
 - Node.js 20+
 - [pnpm](https://pnpm.io/) 9+
 
-## First-time setup
+## Setup
 
 ```bash
 pnpm install
@@ -16,11 +18,9 @@ pnpm db:push
 pnpm db:seed
 ```
 
-The `.env.example` file sets `DATABASE_URL="file:../dev.db"` (SQLite at the repo root).
+`DATABASE_URL` points to a SQLite file at the repo root (`file:../dev.db`).
 
 ## Development
-
-Start API and web in parallel:
 
 ```bash
 pnpm dev
@@ -31,23 +31,29 @@ pnpm dev
 | API | http://localhost:3000/ |
 | Web | http://localhost:5173/ |
 
-The Vite dev server proxies `/api` requests to the API on port 3000 (path rewrite strips the `/api` prefix).
+The web app proxies `/api` to the backend (the `/api` prefix is stripped before forwarding).
 
-### Expected UI
-
-After seeding, the appointments list shows **5 appointments** with mixed status badges: **scheduled**, **completed**, and **cancelled**.
-
-## Database scripts
+## Scripts
 
 | Command | Description |
 |---|---|
-| `pnpm db:push` | Apply Prisma schema to the local SQLite database |
-| `pnpm db:seed` | Seed clients, professionals, services, and 5 appointments |
-| `pnpm db:studio` | Open Prisma Studio to inspect the database |
+| `pnpm dev` | Start API and web in parallel |
+| `pnpm test` | Run API tests |
+| `pnpm db:push` | Apply Prisma schema |
+| `pnpm db:seed` | Load sample data |
+| `pnpm db:studio` | Open Prisma Studio |
+
+## Project layout
+
+| Path | Role |
+|---|---|
+| `apps/api` | REST API (Fastify) |
+| `apps/web` | UI (React + Vite) |
+| `packages/shared` | Shared schemas and constants |
 
 ## API errors
 
-All API errors return a JSON envelope:
+Errors use a consistent JSON envelope:
 
 ```json
 {
@@ -58,7 +64,7 @@ All API errors return a JSON envelope:
 }
 ```
 
-Example — creating an appointment with a past `startsAt`:
+Example — appointment with a past `startsAt`:
 
 ```json
 {
@@ -68,20 +74,3 @@ Example — creating an appointment with a past `startsAt`:
   }
 }
 ```
-
-## Smoke test
-
-Before the workshop, run through the manual checklist in [SMOKE_TEST.md](./SMOKE_TEST.md).
-
-## Packages
-
-| Package | Description |
-|---|---|
-| `apps/api` | Fastify backend |
-| `apps/web` | React + Vite frontend |
-| `packages/shared` | Shared types and constants |
-
-## Workshop
-
-- Workshop guide: [Taller.md](./Taller.md)
-- Next OpenSpec change: `appointment-reschedule-and-cancel` (reschedule and cancel flows)
