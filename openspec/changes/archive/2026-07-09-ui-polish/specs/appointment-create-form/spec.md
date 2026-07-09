@@ -1,8 +1,5 @@
-# appointment-create-form Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change phase-3. Update Purpose after archive.
-## Requirements
 ### Requirement: Create appointment form exists
 
 The web app SHALL provide a polished form to create appointments using shadcn Select for catalog fields and shadcn Input for native date and time pickers.
@@ -26,4 +23,3 @@ The web app SHALL provide a polished form to create appointments using shadcn Se
 
 - **WHEN** an appointment is created successfully
 - **THEN** the appointments list updates without a full page reload
-

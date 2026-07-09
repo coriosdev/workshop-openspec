@@ -1,5 +1,22 @@
 import { useState } from "react";
 import { createAppointmentSchema } from "@workshop/shared";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ApiError } from "../../lib/api";
 import {
   useClients,
@@ -106,100 +123,129 @@ export function AppointmentForm({ onSuccess }: AppointmentFormProps) {
   }
 
   return (
-    <form className="appointment-form" onSubmit={handleSubmit}>
-      <div className="form-field">
-        <label htmlFor="clientId">Client</label>
-        <select
-          id="clientId"
-          value={form.clientId}
-          disabled={catalogsLoading}
-          onChange={(event) => handleChange("clientId", event.target.value)}
-        >
-          <option value="">Select a client</option>
-          {clients.map((client) => (
-            <option key={client.id} value={client.id}>
-              {client.name}
-            </option>
-          ))}
-        </select>
-        {fieldErrors.clientId && (
-          <span className="field-error">{fieldErrors.clientId}</span>
-        )}
-      </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>New appointment</CardTitle>
+        <CardDescription>
+          Schedule a client with a professional and service.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="clientId">Client</Label>
+            <Select
+              value={form.clientId || undefined}
+              disabled={catalogsLoading}
+              onValueChange={(value) => handleChange("clientId", value)}
+            >
+              <SelectTrigger id="clientId">
+                <SelectValue placeholder="Select a client" />
+              </SelectTrigger>
+              <SelectContent>
+                {clients.map((client) => (
+                  <SelectItem key={client.id} value={client.id}>
+                    {client.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {fieldErrors.clientId && (
+              <span className="text-sm text-destructive">
+                {fieldErrors.clientId}
+              </span>
+            )}
+          </div>
 
-      <div className="form-field">
-        <label htmlFor="professionalId">Professional</label>
-        <select
-          id="professionalId"
-          value={form.professionalId}
-          disabled={catalogsLoading}
-          onChange={(event) =>
-            handleChange("professionalId", event.target.value)
-          }
-        >
-          <option value="">Select a professional</option>
-          {professionals.map((professional) => (
-            <option key={professional.id} value={professional.id}>
-              {professional.name}
-            </option>
-          ))}
-        </select>
-        {fieldErrors.professionalId && (
-          <span className="field-error">{fieldErrors.professionalId}</span>
-        )}
-      </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="professionalId">Professional</Label>
+            <Select
+              value={form.professionalId || undefined}
+              disabled={catalogsLoading}
+              onValueChange={(value) => handleChange("professionalId", value)}
+            >
+              <SelectTrigger id="professionalId">
+                <SelectValue placeholder="Select a professional" />
+              </SelectTrigger>
+              <SelectContent>
+                {professionals.map((professional) => (
+                  <SelectItem key={professional.id} value={professional.id}>
+                    {professional.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {fieldErrors.professionalId && (
+              <span className="text-sm text-destructive">
+                {fieldErrors.professionalId}
+              </span>
+            )}
+          </div>
 
-      <div className="form-field">
-        <label htmlFor="serviceId">Service</label>
-        <select
-          id="serviceId"
-          value={form.serviceId}
-          disabled={catalogsLoading}
-          onChange={(event) => handleChange("serviceId", event.target.value)}
-        >
-          <option value="">Select a service</option>
-          {services.map((service) => (
-            <option key={service.id} value={service.id}>
-              {service.name}
-            </option>
-          ))}
-        </select>
-        {fieldErrors.serviceId && (
-          <span className="field-error">{fieldErrors.serviceId}</span>
-        )}
-      </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="serviceId">Service</Label>
+            <Select
+              value={form.serviceId || undefined}
+              disabled={catalogsLoading}
+              onValueChange={(value) => handleChange("serviceId", value)}
+            >
+              <SelectTrigger id="serviceId">
+                <SelectValue placeholder="Select a service" />
+              </SelectTrigger>
+              <SelectContent>
+                {services.map((service) => (
+                  <SelectItem key={service.id} value={service.id}>
+                    {service.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {fieldErrors.serviceId && (
+              <span className="text-sm text-destructive">
+                {fieldErrors.serviceId}
+              </span>
+            )}
+          </div>
 
-      <div className="form-field">
-        <label htmlFor="date">Date</label>
-        <input
-          id="date"
-          type="date"
-          value={form.date}
-          onChange={(event) => handleChange("date", event.target.value)}
-        />
-        {fieldErrors.date && (
-          <span className="field-error">{fieldErrors.date}</span>
-        )}
-      </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              type="date"
+              value={form.date}
+              onChange={(event) => handleChange("date", event.target.value)}
+            />
+            {fieldErrors.date && (
+              <span className="text-sm text-destructive">
+                {fieldErrors.date}
+              </span>
+            )}
+          </div>
 
-      <div className="form-field">
-        <label htmlFor="time">Time</label>
-        <input
-          id="time"
-          type="time"
-          value={form.time}
-          onChange={(event) => handleChange("time", event.target.value)}
-        />
-        {fieldErrors.time && (
-          <span className="field-error">{fieldErrors.time}</span>
-        )}
-      </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="time">Time</Label>
+            <Input
+              id="time"
+              type="time"
+              value={form.time}
+              onChange={(event) => handleChange("time", event.target.value)}
+            />
+            {fieldErrors.time && (
+              <span className="text-sm text-destructive">
+                {fieldErrors.time}
+              </span>
+            )}
+          </div>
 
-      {apiError && <p className="form-api-error">{apiError}</p>}
+          {apiError && (
+            <p className="text-sm text-destructive">{apiError}</p>
+          )}
 
-      <button type="submit" disabled={createMutation.isPending}>
-        {createMutation.isPending ? "Creating…" : "Create appointment"}
-      </button>
-    </form>
+          <Button type="submit" disabled={createMutation.isPending}>
+            {createMutation.isPending ? "Creating…" : "Create appointment"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

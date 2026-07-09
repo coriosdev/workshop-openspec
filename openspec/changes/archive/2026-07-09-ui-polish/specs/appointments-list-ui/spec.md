@@ -1,8 +1,5 @@
-# appointments-list-ui Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change phase-3. Update Purpose after archive.
-## Requirements
 ### Requirement: Appointment list displays seed data with relations
 
 The appointments list SHALL show client, professional, service, formatted date/time, and status for each appointment using polished card-based layout and shadcn Badge components.
@@ -21,4 +18,3 @@ The appointments list SHALL show client, professional, service, formatted date/t
 
 - **WHEN** the appointments query is loading or fails
 - **THEN** the UI shows a styled loading or error message respectively
-

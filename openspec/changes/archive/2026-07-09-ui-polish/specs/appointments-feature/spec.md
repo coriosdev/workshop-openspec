@@ -1,8 +1,5 @@
-# appointments-feature Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change phase-3. Update Purpose after archive.
-## Requirements
 ### Requirement: Appointments feature folder is wired into the app shell
 
 The web app SHALL organize appointments UI under `src/features/appointments/` and render a polished appointments screen from `App.tsx`.
@@ -16,4 +13,3 @@ The web app SHALL organize appointments UI under `src/features/appointments/` an
 
 - **WHEN** the user clicks the new appointment control
 - **THEN** the create form is shown above the list inside a styled card layout
-

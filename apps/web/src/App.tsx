@@ -1,25 +1,33 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { AppointmentForm } from "./features/appointments/AppointmentForm";
 import { AppointmentList } from "./features/appointments/AppointmentList";
-import "./features/appointments/appointments.css";
 
 export function App() {
   const [showForm, setShowForm] = useState(false);
 
   return (
-    <main className="appointments-page">
-      <header className="appointments-header">
-        <h1>Appointments</h1>
-        <button type="button" onClick={() => setShowForm((visible) => !visible)}>
-          {showForm ? "Cancel" : "+ New appointment"}
-        </button>
-      </header>
+    <main className="min-h-screen bg-muted/30">
+      <div className="container mx-auto max-w-2xl px-4 py-8">
+        <header className="mb-8 flex items-center justify-between">
+          <h1 className="text-2xl font-semibold tracking-tight">Appointments</h1>
+          <Button
+            type="button"
+            variant={showForm ? "outline" : "default"}
+            onClick={() => setShowForm((visible) => !visible)}
+          >
+            {showForm ? "Cancel" : "+ New appointment"}
+          </Button>
+        </header>
 
-      {showForm && (
-        <AppointmentForm onSuccess={() => setShowForm(false)} />
-      )}
+        {showForm && (
+          <div className="mb-8">
+            <AppointmentForm onSuccess={() => setShowForm(false)} />
+          </div>
+        )}
 
-      <AppointmentList />
+        <AppointmentList />
+      </div>
     </main>
   );
 }
